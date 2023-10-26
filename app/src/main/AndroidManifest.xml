@@ -26,6 +26,9 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity android:name=".ui.home.HomeActivity"/>
+        <activity android:name=".ui.incidents.IncidentActivity"/>
+
     </application>
 
 </manifest>
