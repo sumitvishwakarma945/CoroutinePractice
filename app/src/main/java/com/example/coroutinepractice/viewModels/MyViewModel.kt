@@ -2,26 +2,26 @@ package com.example.coroutinepractice.viewModels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.coroutinepractice.responses.Comments
 import com.example.coroutinepractice.data.repository.MyRepository
 import com.example.coroutinepractice.requests.VersionRequestItem
 import com.example.coroutinepractice.responses.IncidentResponse
+import com.example.coroutinepractice.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import retrofit2.Response
 
-class MyViewModel():ViewModel() {
+class MyViewModel:ViewModel() {
     private val myRepository = MyRepository()
 //    val _comments = MutableLiveData<List<Comments>>()
 //    val comments:LiveData<List<Comments>> = _comments
     private val _comments = MutableLiveData<Comments>()
     val comments:LiveData<Comments> = _comments
 
-    private val _incidents = MutableLiveData<IncidentResponse>()
-    val incidents:LiveData<IncidentResponse> = _incidents
+     val incidents:MutableLiveData<Resource<IncidentResponse>> = MutableLiveData()
+//    val incidents: LiveData<Resource<IncidentResponse>> = _incidents
 
 
     suspend fun getComments(versionRequestItem: VersionRequestItem) =
@@ -35,9 +35,20 @@ class MyViewModel():ViewModel() {
 
     suspend fun getIncidents() =
         viewModelScope.launch(Dispatchers.IO) {
+            incidents.postValue(Resource.Loading())
             val data = myRepository.getIncidents()
-            if (data.body()!=null && data.isSuccessful){
-                _incidents.postValue(data.body())
+            incidents.postValue(handleIncidentResponse(data))
+//            if (data.body()!=null && data.isSuccessful){
+//                _incidents.postValue(data.body())
+//            }
+        }
+
+    private fun handleIncidentResponse(response: Response<IncidentResponse>) : Resource<IncidentResponse>{
+        if(response.isSuccessful){
+            response.body()?.let {incidentResponse ->
+                return Resource.Success(incidentResponse)
             }
         }
+        return Resource.Error(response.message())
+    }
 }
