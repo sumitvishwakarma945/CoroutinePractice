@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/title_lead_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lead id"
+            android:textSize="20sp"
+            android:textColor="@color/dark_yellow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_lead_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100"
+            android:textSize="20sp"
+            android:textColor="@color/dark_yellow"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/title_lead_id"
+            app:layout_constraintBottom_toBottomOf="@+id/title_lead_id"/>
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/title_asset_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Asset id"
+            android:textSize="20sp"
+            android:textColor="@color/dark_yellow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_lead_id" />
+
+        <TextView
+            android:id="@+id/text_asset_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="120"
+            android:textSize="20sp"
+            android:textColor="@color/dark_yellow"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/title_asset_id"
+            app:layout_constraintBottom_toBottomOf="@+id/title_asset_id"/>
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/title_asset_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Asset name"
+            android:textSize="20sp"
+            android:textColor="@color/dark_yellow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_asset_id" />
+
+        <TextView
+            android:id="@+id/text_asset_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="130"
+            android:textSize="20sp"
+            android:textColor="@color/dark_yellow"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/title_asset_name"
+            app:layout_constraintBottom_toBottomOf="@+id/title_asset_name"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

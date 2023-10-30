@@ -8,8 +8,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.coroutinepractice.responses.Comments
 import com.example.coroutinepractice.data.repository.MyRepository
 import com.example.coroutinepractice.requests.VersionRequestItem
+import com.example.coroutinepractice.responses.IncidentResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MyViewModel():ViewModel() {
     private val myRepository = MyRepository()
@@ -18,6 +20,9 @@ class MyViewModel():ViewModel() {
     private val _comments = MutableLiveData<Comments>()
     val comments:LiveData<Comments> = _comments
 
+    private val _incidents = MutableLiveData<IncidentResponse>()
+    val incidents:LiveData<IncidentResponse> = _incidents
+
 
     suspend fun getComments(versionRequestItem: VersionRequestItem) =
         viewModelScope.launch(Dispatchers.IO) {
@@ -25,6 +30,14 @@ class MyViewModel():ViewModel() {
             val data = myRepository.getAppVersion(versionRequestItem)
             if(data.body()!=null && data.isSuccessful){
                 _comments.postValue(data.body())
+            }
+        }
+
+    suspend fun getIncidents() =
+        viewModelScope.launch(Dispatchers.IO) {
+            val data = myRepository.getIncidents()
+            if (data.body()!=null && data.isSuccessful){
+                _incidents.postValue(data.body())
             }
         }
 }
