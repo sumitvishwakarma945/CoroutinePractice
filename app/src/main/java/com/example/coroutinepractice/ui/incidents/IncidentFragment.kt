@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coroutinepractice.base.BaseFragment
 import com.example.coroutinepractice.databinding.IncidentFragmentBinding
-import com.example.coroutinepractice.responses.Incident
 import com.example.coroutinepractice.responses.Item
 import com.example.coroutinepractice.utils.Resource
 import com.example.coroutinepractice.viewModels.MyViewModel
@@ -27,11 +26,7 @@ class IncidentFragment:BaseFragment() {
     private var items = ArrayList<Item>()
     private var myViewModel = MyViewModel()
     private val TAG = "ITEMS"
-
-    private var incidents = ArrayList<Incident>()
-//    private lateinit var items:List<Leads>
-
-//    private lateinit var rows:List<List<String>>
+    private var incidentString = ArrayList<ArrayList<String>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,22 +95,15 @@ class IncidentFragment:BaseFragment() {
     }
 
     private fun getIncidents(response: ArrayList<Item>) {
-        incidents.addAll(response[0].rows)
-        setAdapter(incidents)
+        for (i in response[0].rows.indices){
+            incidentString.add(response[0].rows[i] as ArrayList<String>)
+        }
+        setAdapter(incidentString)
+        Timber.d("IncidentString", incidentString)
     }
 
-//    private fun getRowItems() {
-//        items = listOf(
-//            Leads("1","First","Asset1"),
-//            Leads("2","First","Asset2"),
-//            Leads("3","First","Asset3"),
-//            Leads("4","First","Asset4"),
-//            Leads("5","First","Asset5"),
-//            Leads("6","First","Asset6")
-//        )
-//    }
 
-    private fun setAdapter(items: ArrayList<Incident>) {
+    private fun setAdapter(items: ArrayList<ArrayList<String>>) {
         mAdapter = IncidentAdapter(items)
         recyclerView.adapter = mAdapter
     }

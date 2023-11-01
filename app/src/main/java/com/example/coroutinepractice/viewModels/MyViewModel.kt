@@ -9,9 +9,9 @@ import com.example.coroutinepractice.data.repository.MyRepository
 import com.example.coroutinepractice.requests.VersionRequestItem
 import com.example.coroutinepractice.responses.IncidentResponse
 import com.example.coroutinepractice.utils.Resource
+import com.example.coroutinepractice.utils.ResponseUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 class MyViewModel:ViewModel() {
     private val myRepository = MyRepository()
@@ -37,18 +37,19 @@ class MyViewModel:ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             incidents.postValue(Resource.Loading())
             val data = myRepository.getIncidents()
-            incidents.postValue(handleIncidentResponse(data))
+//            incidents.postValue(handleIncidentResponse(data))
+            incidents.postValue(ResponseUtils<IncidentResponse>().handleResponse(data))
 //            if (data.body()!=null && data.isSuccessful){
 //                _incidents.postValue(data.body())
 //            }
         }
 
-    private fun handleIncidentResponse(response: Response<IncidentResponse>) : Resource<IncidentResponse>{
+    /*private fun handleIncidentResponse(response: Response<IncidentResponse>) : Resource<IncidentResponse>{
         if(response.isSuccessful){
             response.body()?.let {incidentResponse ->
                 return Resource.Success(incidentResponse)
             }
         }
         return Resource.Error(response.message())
-    }
+    }*/
 }

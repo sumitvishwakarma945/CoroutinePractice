@@ -4,13 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coroutinepractice.databinding.ItemIncidentBinding
-import com.example.coroutinepractice.responses.Incident
-import com.example.coroutinepractice.responses.Item
-import kotlinx.android.synthetic.main.item_incident.view.title_asset_id
-import kotlinx.android.synthetic.main.item_incident.view.title_asset_name
-import kotlinx.android.synthetic.main.item_incident.view.title_lead_id
+import kotlinx.android.synthetic.main.item_incident.view.text_asset_id
+import kotlinx.android.synthetic.main.item_incident.view.text_asset_name
+import kotlinx.android.synthetic.main.item_incident.view.text_lead_id
 
-class IncidentAdapter(private val items: ArrayList<Incident>) :RecyclerView.Adapter<IncidentAdapter.ViewHolder>(){
+class IncidentAdapter(private val items: ArrayList<ArrayList<String>>) :RecyclerView.Adapter<IncidentAdapter.ViewHolder>(){
 
 
 
@@ -41,9 +39,9 @@ class IncidentAdapter(private val items: ArrayList<Incident>) :RecyclerView.Adap
 //        holder.bindData(items[position])
         val incident = items[position]
         holder.itemView.apply {
-          title_lead_id.text = incident.lead_id
-          title_asset_id.text = incident.asset_id
-          title_asset_name.text = incident.asset_name
+          text_lead_id.text = incident[0]
+          text_asset_id.text = incident[1]
+          text_asset_name.text = incident[2]
         }
     }
 
