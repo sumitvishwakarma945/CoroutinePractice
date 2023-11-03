@@ -8,8 +8,6 @@ data class Item(
     val columnNames: List<String>,
     @SerializedName("count")
     val count: Int,
-//    @SerializedName("rows")
-//    val rows: List<List<Incident>>,
     @SerializedName("rows")
     val rows: List<List<String>>,
     @SerializedName("tableName")

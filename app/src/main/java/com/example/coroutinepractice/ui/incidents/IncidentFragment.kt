@@ -5,15 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.coroutinepractice.R
 import com.example.coroutinepractice.base.BaseFragment
 import com.example.coroutinepractice.databinding.IncidentFragmentBinding
-import com.example.coroutinepractice.responses.Item
+import com.example.coroutinepractice.responses.Incident
 import com.example.coroutinepractice.utils.Resource
+import com.example.coroutinepractice.viewModels.IncidentViewModel
 import com.example.coroutinepractice.viewModels.MyViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,22 +26,17 @@ class IncidentFragment:BaseFragment() {
     private lateinit var binding: IncidentFragmentBinding
     private lateinit var mAdapter: IncidentAdapter
     private lateinit var recyclerView: RecyclerView
-    private var items = ArrayList<Item>()
-    private var myViewModel = MyViewModel()
-    private val TAG = "ITEMS"
-    private var incidentString = ArrayList<ArrayList<String>>()
+//    private var myViewModel = MyViewModel()
+    private var myViewModel = IncidentViewModel()
+    private var incidentFromModelClass:ArrayList<Incident> = ArrayList()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = IncidentFragmentBinding.inflate(inflater, container, false)
-
+        binding = DataBindingUtil.inflate(inflater, R.layout.incident_fragment, container, false)
         return binding.root
     }
 
@@ -52,26 +50,27 @@ class IncidentFragment:BaseFragment() {
     }
 
     private fun setViewModel() {
-        myViewModel = ViewModelProvider(this)[MyViewModel::class.java]
+        myViewModel = ViewModelProvider(this)[IncidentViewModel::class.java]
     }
 
     private fun getIncidentsFromApi() {
         lifecycleScope.launch(Dispatchers.Main) {
             try {
                 myViewModel.getIncidents()
-                myViewModel.incidents.observe(viewLifecycleOwner, Observer {response ->
+
+                myViewModel.incidentsResponse.observe(viewLifecycleOwner, Observer {response ->
                     when(response){
-                       is Resource.Success -> {
+                        is Resource.Success -> {
                             hideProgressBar()
-                           response.data?.let {newsResponse ->
-                               items = newsResponse.items as ArrayList<Item>
-                               getIncidents(items)
-                           }
-                       }
+                            response.data?.let {newsResponse ->
+                                incidentFromModelClass = Incident().toIncident(newsResponse)
+                            }
+                            setAdapter(incidentFromModelClass)
+                        }
                         is Resource.Error -> {
                             hideProgressBar()
                             response.message?.let {message ->
-                                Timber.tag("ErrorIncident").e("An error occured in incidents: $message")
+                                Timber.tag("ErrorIncident").e("An error occurred in incidents: $message")
 
                             }
                         }
@@ -80,6 +79,7 @@ class IncidentFragment:BaseFragment() {
                         }
                     }
                 })
+
             }catch (e:Exception){
                 Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
             }
@@ -94,16 +94,7 @@ class IncidentFragment:BaseFragment() {
         binding.progressBar.visibility = View.INVISIBLE
     }
 
-    private fun getIncidents(response: ArrayList<Item>) {
-        for (i in response[0].rows.indices){
-            incidentString.add(response[0].rows[i] as ArrayList<String>)
-        }
-        setAdapter(incidentString)
-        Timber.d("IncidentString", incidentString)
-    }
-
-
-    private fun setAdapter(items: ArrayList<ArrayList<String>>) {
+    private fun setAdapter(items: ArrayList<Incident>) {
         mAdapter = IncidentAdapter(items)
         recyclerView.adapter = mAdapter
     }
