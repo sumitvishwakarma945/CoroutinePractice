@@ -4,12 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.coroutinepractice.responses.Comments
 import com.example.coroutinepractice.data.repository.MyRepository
 import com.example.coroutinepractice.requests.VersionRequestItem
+import com.example.coroutinepractice.responses.Comments
 import com.example.coroutinepractice.responses.IncidentResponse
 import com.example.coroutinepractice.utils.Resource
-import com.example.coroutinepractice.utils.ResponseUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

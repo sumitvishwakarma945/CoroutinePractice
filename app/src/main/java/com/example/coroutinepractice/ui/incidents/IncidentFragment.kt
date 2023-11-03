@@ -17,7 +17,6 @@ import com.example.coroutinepractice.databinding.IncidentFragmentBinding
 import com.example.coroutinepractice.responses.Incident
 import com.example.coroutinepractice.utils.Resource
 import com.example.coroutinepractice.viewModels.IncidentViewModel
-import com.example.coroutinepractice.viewModels.MyViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber

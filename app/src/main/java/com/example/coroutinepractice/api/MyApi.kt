@@ -1,9 +1,8 @@
 package com.example.coroutinepractice.api
 
-import com.example.coroutinepractice.responses.Comments
 import com.example.coroutinepractice.requests.VersionRequestItem
+import com.example.coroutinepractice.responses.Comments
 import com.example.coroutinepractice.responses.IncidentResponse
-import com.example.coroutinepractice.utils.Resource
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

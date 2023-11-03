@@ -1,13 +1,11 @@
 package com.example.coroutinepractice.data.repository
 
-import androidx.lifecycle.MutableLiveData
 import com.example.coroutinepractice.QueryUtils
 import com.example.coroutinepractice.base.BaseRepository
 import com.example.coroutinepractice.dataBuilder.RetrofitInstance
 import com.example.coroutinepractice.requests.VersionRequestItem
 import com.example.coroutinepractice.responses.Comments
 import com.example.coroutinepractice.responses.IncidentResponse
-import com.example.coroutinepractice.utils.Resource
 import retrofit2.Response
 import java.lang.String
 
