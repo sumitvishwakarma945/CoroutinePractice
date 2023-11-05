@@ -25,5 +25,8 @@ class IncidentAdapter(private val items:ArrayList<Incident>) :RecyclerView.Adapt
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val incident = items[position]
         holder.itemIncidentBinding.incident = incident
+
+        //Using executePendingBindings to avoid little flickering of recyclerView when configuration of screen changes.
+        holder.itemIncidentBinding.executePendingBindings()
     }
 }

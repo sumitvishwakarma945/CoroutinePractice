@@ -2,11 +2,16 @@ package com.example.coroutinepractice.ui.version
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.example.coroutinepractice.BR
+import com.example.coroutinepractice.R
 import com.example.coroutinepractice.base.BaseFragment
 import com.example.coroutinepractice.databinding.VersionFragmentBinding
 import com.example.coroutinepractice.requests.VersionRequestItem
@@ -14,20 +19,14 @@ import com.example.coroutinepractice.ui.incidents.IncidentActivity
 import com.example.coroutinepractice.viewModels.MyViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.internal.notify
 import timber.log.Timber
 import java.lang.Exception
 
 class VersionFragment:BaseFragment() {
     private lateinit var binding: VersionFragmentBinding
     private var versionRequestItem = VersionRequestItem()
-    private lateinit var myViewModel:MyViewModel
-    private var appVersion:String? = null
-    private var versionApp = "VERSION_APP"
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(versionApp, appVersion)
-    }
+    private var myViewModel = MyViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,13 +37,10 @@ class VersionFragment:BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = VersionFragmentBinding.inflate(inflater, container, false)
-
-        //Saving state of variable on configuration change
-        if(savedInstanceState!=null){
-            appVersion = savedInstanceState.getString(versionApp)
-            binding.textVersionFragment.text = appVersion
-        }
+//        binding = VersionFragmentBinding.inflate(inflater, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.version_fragment, container, false)
+        //dataBinding using ObservableFields (dataBinding step1)
+        binding.myViewModel = myViewModel
 
         return binding.root
     }
@@ -52,7 +48,14 @@ class VersionFragment:BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setViewModel()
-        binding.btnOpenVersionFragment.setOnClickListener {
+        //Set the bindingVariable with already generated BR.java file (dataBinding step2)
+        val bindingVariable = BR.myViewModel
+        //Set the variable with ViewModel (dataBinding step 3)
+        binding.setVariable(bindingVariable, myViewModel)
+        //Need to attach lifecycleOwner because of which changes happen in xml (dataBinding Step 4)
+        binding.lifecycleOwner = this
+        binding.executePendingBindings()
+        binding.btnHitVersionApi.setOnClickListener {
             callVersion()
         }
         binding.btnOpenIncidentActivity.setOnClickListener {
@@ -72,10 +75,11 @@ class VersionFragment:BaseFragment() {
                 versionRequestItem.Version_Number = "1.0"
                 versionRequestItem.Login = "GMM3671"
                 myViewModel.getComments(versionRequestItem)
-                myViewModel.comments.observe(viewLifecycleOwner) {
-                    appVersion = it.status
-                    binding.textVersionFragment.text = appVersion
-                }
+                myViewModel.comments.observe(viewLifecycleOwner, Observer {
+                    val appVersion = it.status
+                    myViewModel.version.set(appVersion)
+                    Log.d("VersionValue", myViewModel.version.get().toString())
+                })
             }catch (e:Exception){
                 Timber.d(e.message)
             }
