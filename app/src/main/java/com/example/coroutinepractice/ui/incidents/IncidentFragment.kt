@@ -1,12 +1,15 @@
 package com.example.coroutinepractice.ui.incidents
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +18,8 @@ import com.example.coroutinepractice.R
 import com.example.coroutinepractice.base.BaseFragment
 import com.example.coroutinepractice.databinding.IncidentFragmentBinding
 import com.example.coroutinepractice.responses.Incident
+import com.example.coroutinepractice.utils.NotificationHelper
+import com.example.coroutinepractice.utils.NotificationReceiver
 import com.example.coroutinepractice.utils.Resource
 import com.example.coroutinepractice.viewModels.IncidentViewModel
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +33,14 @@ class IncidentFragment:BaseFragment() {
 //    private var myViewModel = MyViewModel()
     private var myViewModel = IncidentViewModel()
     private var incidentFromModelClass:ArrayList<Incident> = ArrayList()
+    private val mReceiver:BroadcastReceiver = NotificationReceiver()
+    private val intentFilter = IntentFilter("com.example.coroutinepractice")
+    private val listenToBroadcastsFromOtherApps = false
+    private val receiverFlags = if (listenToBroadcastsFromOtherApps) {
+        ContextCompat.RECEIVER_EXPORTED
+    } else {
+        ContextCompat.RECEIVER_NOT_EXPORTED
+    }
 
 
     override fun onCreateView(
@@ -36,6 +49,7 @@ class IncidentFragment:BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.incident_fragment, container, false)
+        ContextCompat.registerReceiver(requireContext(),mReceiver,intentFilter,receiverFlags)
         return binding.root
     }
 
@@ -57,32 +71,41 @@ class IncidentFragment:BaseFragment() {
             try {
                 myViewModel.getIncidents()
 
-                myViewModel.incidentsResponse.observe(viewLifecycleOwner, Observer {response ->
-                    when(response){
+                myViewModel.incidentsResponse.observe(viewLifecycleOwner) { response ->
+                    when (response) {
                         is Resource.Success -> {
                             hideProgressBar()
-                            response.data?.let {newsResponse ->
+                            response.data?.let { newsResponse ->
                                 incidentFromModelClass = Incident().toIncident(newsResponse)
                             }
+                            callNotification(requireContext())
                             setAdapter(incidentFromModelClass)
                         }
+
                         is Resource.Error -> {
                             hideProgressBar()
-                            response.message?.let {message ->
-                                Timber.tag("ErrorIncident").e("An error occurred in incidents: $message")
+                            response.message?.let { message ->
+                                Timber.tag("ErrorIncident")
+                                    .e("An error occurred in incidents: $message")
 
                             }
                         }
-                        is Resource.Loading ->{
+
+                        is Resource.Loading -> {
                             showProgressBar()
                         }
                     }
-                })
+                }
 
             }catch (e:Exception){
                 Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun callNotification(context: Context) {
+        val notificationHelper = NotificationHelper(context)
+        notificationHelper.showNotification()
     }
 
     private fun showProgressBar() {
@@ -96,6 +119,11 @@ class IncidentFragment:BaseFragment() {
     private fun setAdapter(items: ArrayList<Incident>) {
         mAdapter = IncidentAdapter(items)
         recyclerView.adapter = mAdapter
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        context?.unregisterReceiver(mReceiver)
     }
 
 
