@@ -7,8 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.coroutinepractice.R
 import com.example.coroutinepractice.databinding.ItemIncidentBinding
 import com.example.coroutinepractice.responses.Incident
+import dagger.hilt.android.AndroidEntryPoint
 
-class IncidentAdapter(private val items:ArrayList<Incident>) :RecyclerView.Adapter<IncidentAdapter.ViewHolder>(){
+class IncidentAdapter(val items:ArrayList<Incident>) :RecyclerView.Adapter<IncidentAdapter.ViewHolder>(){
 
     inner class ViewHolder(val itemIncidentBinding: ItemIncidentBinding): RecyclerView.ViewHolder(itemIncidentBinding.root)
 

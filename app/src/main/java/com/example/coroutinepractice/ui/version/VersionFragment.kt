@@ -2,7 +2,6 @@ package com.example.coroutinepractice.ui.version
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,16 +16,19 @@ import com.example.coroutinepractice.databinding.VersionFragmentBinding
 import com.example.coroutinepractice.requests.VersionRequestItem
 import com.example.coroutinepractice.ui.incidents.IncidentActivity
 import com.example.coroutinepractice.viewModels.MyViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.internal.notify
 import timber.log.Timber
-import java.lang.Exception
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class VersionFragment:BaseFragment() {
+    @JvmField
+    @Inject var myViewModel = MyViewModel()
     private lateinit var binding: VersionFragmentBinding
     private var versionRequestItem = VersionRequestItem()
-    private var myViewModel = MyViewModel()
+//    private var myViewModel = MyViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +80,6 @@ class VersionFragment:BaseFragment() {
                 myViewModel.comments.observe(viewLifecycleOwner, Observer {
                     val appVersion = it.status
                     myViewModel.version.set(appVersion)
-                    Log.d("VersionValue", myViewModel.version.get().toString())
                 })
             }catch (e:Exception){
                 Timber.d(e.message)

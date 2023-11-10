@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
     id 'com.google.gms.google-services'
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -40,6 +41,10 @@ android {
     }
 }
 
+kapt {
+    correctErrorTypes = true
+}
+
 dependencies {
 
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
@@ -73,5 +78,8 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:5.0.1'
     //Saved State
 //    implementation 'androidx.lifecycle:lifecycle-*:2.1.0'
+    //Dagger Hilt
+    implementation("com.google.dagger:hilt-android:2.44")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
 
 }
