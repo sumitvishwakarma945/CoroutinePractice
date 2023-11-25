@@ -8,8 +8,9 @@ import com.example.coroutinepractice.R
 import com.example.coroutinepractice.databinding.ItemIncidentBinding
 import com.example.coroutinepractice.responses.Incident
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class IncidentAdapter(val items:ArrayList<Incident>) :RecyclerView.Adapter<IncidentAdapter.ViewHolder>(){
+class IncidentAdapter @Inject constructor(val items:ArrayList<Incident>) :RecyclerView.Adapter<IncidentAdapter.ViewHolder>(){
 
     inner class ViewHolder(val itemIncidentBinding: ItemIncidentBinding): RecyclerView.ViewHolder(itemIncidentBinding.root)
 

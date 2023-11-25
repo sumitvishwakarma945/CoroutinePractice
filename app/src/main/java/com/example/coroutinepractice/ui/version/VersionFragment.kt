@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.coroutinepractice.BR
 import com.example.coroutinepractice.R
 import com.example.coroutinepractice.base.BaseFragment
+import com.example.coroutinepractice.data.repository.MyRepository
 import com.example.coroutinepractice.databinding.VersionFragmentBinding
 import com.example.coroutinepractice.requests.VersionRequestItem
 import com.example.coroutinepractice.ui.incidents.IncidentActivity
@@ -24,11 +25,12 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class VersionFragment:BaseFragment() {
-    @JvmField
-    @Inject var myViewModel = MyViewModel()
+//    @Inject lateinit var myRepository: MyRepository
+//    @JvmField
+//    @Inject var myViewModel = MyViewModel(myRepository)
     private lateinit var binding: VersionFragmentBinding
     private var versionRequestItem = VersionRequestItem()
-//    private var myViewModel = MyViewModel()
+    private var myViewModel = MyViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

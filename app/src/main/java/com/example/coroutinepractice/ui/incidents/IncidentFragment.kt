@@ -26,16 +26,17 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class IncidentFragment:BaseFragment() {
-    @Inject lateinit var binding: IncidentFragmentBinding
-    @Inject lateinit var mAdapter: IncidentAdapter
-    @JvmField
-    @Inject var myViewModel = IncidentViewModel()
+//    @Inject lateinit var myRepository: MyRepository
+//    @JvmField
+//    @Inject var myViewModel = IncidentViewModel(myRepository)
+
+    private lateinit var mAdapter: IncidentAdapter
+    private lateinit var binding: IncidentFragmentBinding
     private lateinit var recyclerView: RecyclerView
-//    private var myViewModel = MyViewModel()
+    private var myViewModel = IncidentViewModel()
     private var incidentFromModelClass:ArrayList<Incident> = ArrayList()
     private val mReceiver:BroadcastReceiver = NotificationReceiver()
     private val intentFilter = IntentFilter("com.example.coroutinepractice")
