@@ -24,4 +24,7 @@ interface MyApi {
         @Header("Authorization") auth: String,
         @Header("OSvC-CREST-Application-Context") s: String
     ): Response<IncidentResponse>
+
+    @POST("cgi-bin/gmmco.cfg/php/custom/appversioncheck.php")
+    suspend fun getAppVersionFLow(@Body versionRequestItem: VersionRequestItem, @Header("Authorization") auth:String):Response<Comments>
 }

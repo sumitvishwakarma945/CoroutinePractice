@@ -8,6 +8,9 @@ import com.example.coroutinepractice.di.ApplicationModule
 import com.example.coroutinepractice.requests.VersionRequestItem
 import com.example.coroutinepractice.responses.Comments
 import com.example.coroutinepractice.responses.IncidentResponse
+import com.example.coroutinepractice.utils.Resource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -27,5 +30,12 @@ class MyRepository @Inject constructor():BaseRepository() {
 //    suspend fun getIncidents():Response<IncidentResponse> = RetrofitInstance.retrofit.getIncidents(incident_query, auth, "0")
 
     suspend fun getIncidents():Response<IncidentResponse> = RetrofitInstance.retrofit.getIncidents(incident_query, auth, "0")
+
+    suspend fun getAppVersionFlow(versionRequestItem: VersionRequestItem): Flow<Response<Comments>>{
+        return flow {
+            val response = RetrofitInstance.retrofit.getAppVersionFLow(versionRequestItem, auth)
+            emit(response)
+        }
+    }
 
 }
