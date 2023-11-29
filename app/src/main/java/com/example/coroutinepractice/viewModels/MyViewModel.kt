@@ -8,10 +8,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.coroutinepractice.data.repository.MyRepository
 import com.example.coroutinepractice.requests.VersionRequestItem
 import com.example.coroutinepractice.responses.Comments
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MyViewModel : ViewModel() {
+@HiltViewModel
+class MyViewModel @Inject constructor() : ViewModel() {
     private val myRepository = MyRepository()
     private val _comments = MutableLiveData<Comments>()
     val version = ObservableField<String>("")

@@ -7,10 +7,13 @@ import com.example.coroutinepractice.data.repository.MyRepository
 import com.example.coroutinepractice.responses.IncidentResponse
 import com.example.coroutinepractice.utils.Resource
 import com.example.coroutinepractice.utils.ResponseUtils
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class IncidentViewModel:ViewModel() {
+@HiltViewModel
+class IncidentViewModel @Inject constructor() :ViewModel() {
 
     private val myRepository = MyRepository()
     val incidentsResponse:MutableLiveData<Resource<IncidentResponse>> = MutableLiveData()

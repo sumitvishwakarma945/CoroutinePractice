@@ -5,7 +5,9 @@ import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import com.example.coroutinepractice.R
 import com.example.coroutinepractice.base.BaseActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeActivity:BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

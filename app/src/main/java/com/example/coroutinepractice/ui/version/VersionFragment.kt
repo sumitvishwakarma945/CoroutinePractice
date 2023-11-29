@@ -2,7 +2,6 @@ package com.example.coroutinepractice.ui.version
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,15 +14,19 @@ import com.example.coroutinepractice.R
 import com.example.coroutinepractice.base.BaseFragment
 import com.example.coroutinepractice.databinding.VersionFragmentBinding
 import com.example.coroutinepractice.requests.VersionRequestItem
+import com.example.coroutinepractice.ui.composeUi.versionCompose.VersionComposeActivity
 import com.example.coroutinepractice.ui.incidents.IncidentActivity
 import com.example.coroutinepractice.viewModels.MyViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.internal.notify
 import timber.log.Timber
-import java.lang.Exception
 
+@AndroidEntryPoint
 class VersionFragment:BaseFragment() {
+//    @Inject lateinit var myRepository: MyRepository
+//    @JvmField
+//    @Inject var myViewModel = MyViewModel(myRepository)
     private lateinit var binding: VersionFragmentBinding
     private var versionRequestItem = VersionRequestItem()
     private var myViewModel = MyViewModel()
@@ -62,6 +65,10 @@ class VersionFragment:BaseFragment() {
             val intent = Intent(context, IncidentActivity::class.java)
             startActivity(intent)
         }
+        binding.btnOpenVersionCompose.setOnClickListener{
+            val intent = Intent(context, VersionComposeActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setViewModel() {
@@ -78,7 +85,6 @@ class VersionFragment:BaseFragment() {
                 myViewModel.comments.observe(viewLifecycleOwner, Observer {
                     val appVersion = it.status
                     myViewModel.version.set(appVersion)
-                    Log.d("VersionValue", myViewModel.version.get().toString())
                 })
             }catch (e:Exception){
                 Timber.d(e.message)

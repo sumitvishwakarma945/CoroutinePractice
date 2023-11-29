@@ -9,8 +9,9 @@ import androidx.fragment.app.commit
 import com.example.coroutinepractice.R
 import com.example.coroutinepractice.databinding.HomeFragmentBinding
 import com.example.coroutinepractice.ui.version.VersionFragment
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class HomeFragment:Fragment(R.layout.home_fragment) {
     private lateinit var binding: HomeFragmentBinding
 
