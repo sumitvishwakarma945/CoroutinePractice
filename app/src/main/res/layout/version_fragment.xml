@@ -51,5 +51,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_hit_version_api" />
 
+        <Button
+            android:id="@+id/btn_open_version_compose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/dark_yellow"
+            android:textAllCaps="false"
+            android:text="Click to Open Version compose"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_open_incident_activity" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

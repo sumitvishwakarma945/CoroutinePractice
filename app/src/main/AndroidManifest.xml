@@ -40,6 +40,7 @@
         </activity>
         <activity android:name=".ui.home.HomeActivity"/>
         <activity android:name=".ui.incidents.IncidentActivity"/>
+        <activity android:name=".ui.composeUi.versionCompose.VersionComposeActivity"/>
 
     </application>
 

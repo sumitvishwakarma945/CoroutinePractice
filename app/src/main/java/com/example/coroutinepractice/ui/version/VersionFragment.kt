@@ -12,16 +12,15 @@ import androidx.lifecycle.lifecycleScope
 import com.example.coroutinepractice.BR
 import com.example.coroutinepractice.R
 import com.example.coroutinepractice.base.BaseFragment
-import com.example.coroutinepractice.data.repository.MyRepository
 import com.example.coroutinepractice.databinding.VersionFragmentBinding
 import com.example.coroutinepractice.requests.VersionRequestItem
+import com.example.coroutinepractice.ui.composeUi.versionCompose.VersionComposeActivity
 import com.example.coroutinepractice.ui.incidents.IncidentActivity
 import com.example.coroutinepractice.viewModels.MyViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class VersionFragment:BaseFragment() {
@@ -64,6 +63,10 @@ class VersionFragment:BaseFragment() {
         }
         binding.btnOpenIncidentActivity.setOnClickListener {
             val intent = Intent(context, IncidentActivity::class.java)
+            startActivity(intent)
+        }
+        binding.btnOpenVersionCompose.setOnClickListener{
+            val intent = Intent(context, VersionComposeActivity::class.java)
             startActivity(intent)
         }
     }
