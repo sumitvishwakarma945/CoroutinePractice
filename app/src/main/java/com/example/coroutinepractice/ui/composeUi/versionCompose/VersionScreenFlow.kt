@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,7 +32,7 @@ import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun VersionScreenFlow() {
-    var version by remember {
+    var version by rememberSaveable {
         mutableStateOf("")
     }
     val versionRequestItem = VersionRequestItem()
@@ -58,10 +59,11 @@ fun VersionScreenFlow() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = version, color = colorResource(id = R.color.dark_yellow))
+            Text(text = versionResponse.value.data?.status?:"", color = colorResource(id = R.color.dark_yellow))
+//            Text(text = version, color = colorResource(id = R.color.dark_yellow))
             Button(
                 onClick = {
-                    myViewModel.getCommentsFlow(versionRequestItem)
+//                    myViewModel.getCommentsFlow(versionRequestItem)
 //                    version = versionResponse.value.data?.status.toString()
                        version = callVersionApiFLow(versionRequestItem, myViewModel, coroutineScope, versionResponse)
                     Log.d("VersionValue", version)
@@ -90,7 +92,11 @@ fun callVersionApiFLow(
     status = when(versionResponse.value){
         is Resource.Success -> {
             versionResponse.value.data?.status.toString()
-        }else ->{
+        }
+        is Resource.Loading -> {
+            "Loading..."
+        }
+        else ->{
             "No data found"
         }
     }
